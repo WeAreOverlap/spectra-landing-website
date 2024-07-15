@@ -1,1 +1,0 @@
-# spectra-landing-website
