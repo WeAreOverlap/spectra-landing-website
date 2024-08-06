@@ -30,14 +30,14 @@ Suscríbete a nuestro newsletter para obtener acceso anticipado.
         .then((response) => response.json())
         .then((data) => {
           if (data.result === "success") {
-            responseDiv.innerHTML = `<p class="text-sm text-green-600">${t("successMsg")}</p>`;
+            responseDiv.innerHTML = `<p class="text-sm text-green-600">Success!</p>`;
           } else {
-            responseDiv.innerHTML = `<p class="text-sm text-red-600">${t("failureMsg")}</p>`;
+            responseDiv.innerHTML = `<p class="text-sm text-red-600">Failed</p>`;
           }
           form.reset(); // Clear the input field after submission
         })
         .catch((error) => {
-          responseDiv.innerHTML = `<p class="text-sm text-red-600">${t("errorMsg")}</p>`;
+          responseDiv.innerHTML = `<p class="text-sm text-red-600">Error: ${error}</p>`;
         });
     });
   });
