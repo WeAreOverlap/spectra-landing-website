@@ -9,10 +9,12 @@ Your one-stop information source to get the latest news of what
           matters to you. Interact with your articles. Ask questions and more.
 </p> <!-- <p>Coming soon to iOS and Android.</p> --> <p class="font-medium" data-astro-cid-j7pv25f6>
 Subscribe to our newsletter to get early access.
-</p> <form id="subscribe-form" action="https://news.getspectra.app/subscribe" method="post" class="w-full"> <div class="w-full text-sm flex"> <input class="bg-white p-2 pr-0 border-r-0 rounded-l-lg flex-1 text-black border border-slate-200 whitespace-nowrap" type="email" placeholder="Your email address" name="EMAIL" required> <!-- Honeypot field --> <div aria-hidden="true" style="position: absolute; left: -5000px;"> <input type="text" name="b_b2f0e0451e670622752a0bf03_c70198936d" tabindex="-1" value=""> </div> <!-- Hidden field for tags --> <input type="hidden" name="tags" value="landing"> <button type="submit" value="Subscribe" name="subscribe" class="bg-black hover:bg-slate-800 text-white p-3 sm:px-5 rounded-r-lg whitespace-nowrap">Get early access</button> </div> <p class="py-2" id="response"></p><p class="text-xs italic text-slate-400">We will never share your email with anyone else, and we will only use it to send you the newsletter.</p>  </form> <script>
+</p> <form id="subscribeForm" action="https://news.getspectra.app/subscribe" method="post" class="w-full"> <div class="w-full text-sm flex"> <input class="bg-white p-2 pr-0 border-r-0 rounded-l-lg flex-1 text-black border border-slate-200 whitespace-nowrap" type="email" placeholder="Your email address" name="EMAIL" required> <!-- Honeypot field --> <div aria-hidden="true" style="position: absolute; left: -5000px;"> <input type="text" name="b_b2f0e0451e670622752a0bf03_c70198936d" tabindex="-1" value=""> </div> <!-- Hidden field for tags --> <input type="hidden" name="tags" value="landing"> <button type="submit" value="Subscribe" name="subscribe" class="bg-black hover:bg-slate-800 text-white p-3 sm:px-5 rounded-r-lg whitespace-nowrap">Get early access</button> </div> <p class="py-2" id="response"></p><p id="defaultMsg" class="text-xs italic text-slate-400"> We will never share your email with anyone else, and we will only use it to send you the newsletter. </p> <p id="successMsg" class="italic text-sm text-green-600" hidden> Thank you for subscribing! Check your inbox. 📬 </p> <p id="failureMsg" class="italic text-sm text-red-600" hidden> Subscription failed. Please try again. </p> <p id="errorMsg" class="italic text-sm text-red-600" hidden> An error occurred. Please try again. </p>  </form> <script>
   document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById("subscribe-form");
-    const responseDiv = document.getElementById("response");
+    const form = document.getElementById("subscribeForm");
+    const successMsg = document.getElementById("successMsg");
+    const failureMsg = document.getElementById("failureMsg");
+    const errorMsg = document.getElementById("errorMsg");
 
     form.addEventListener("submit", function (event) {
       event.preventDefault();
@@ -29,14 +31,18 @@ Subscribe to our newsletter to get early access.
         .then((response) => response.json())
         .then((data) => {
           if (data.result === "success") {
-            responseDiv.innerHTML = `<p class="text-sm text-green-600">Success!</p>`;
+            defaultMsg.remove();
+            successMsg.removeAttribute("hidden");
           } else {
-            responseDiv.innerHTML = `<p class="text-sm text-red-600">Failed</p>`;
+            defaultMsg.remove();
+            failureMsg.removeAttribute("hidden");
           }
           form.reset(); // Clear the input field after submission
         })
         .catch((error) => {
-          responseDiv.innerHTML = `<p class="text-sm text-red-600">Error: ${error}</p>`;
+          console.error(error);
+          defaultMsg.remove();
+          errorMsg.removeAttribute("hidden");
         });
     });
   });
